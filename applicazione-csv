@@ -1,0 +1,26 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Location{
+	double latitudine1;
+	double longitudine1;
+};
+struct NumerazioneCivica{
+	string classe;
+	string descrizione;
+	string numero;
+	string subalterno;
+	string cap;
+	string istat;
+	double latitudine;
+	double longitudine;
+	Location posto;	
+};
+
+int main(){
+	
+	NumerazioneCivica dati[];
+
+	return 0;
+}
