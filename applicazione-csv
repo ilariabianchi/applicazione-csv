@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 struct Location{
@@ -18,9 +19,68 @@ struct NumerazioneCivica{
 	Location posto;	
 };
 
+/*
+funzione void carica dati: apre il file, legge il contenuto e caricarli nell'array di struct
+parametri: array di struct, nome del file
+-apro il file
+-controllo esistenza
+-lettura riga per riga
+-estrarre i campi e metterli nella struct
+*/
+void CaricaDati(NumerazioneCivica v[], int d) {
+    int i=0;
+    ifstream leggi("Comune_Bergamo_-_Numerazione_civica.csv");
+	string linea;
+	if(leggi.is_open()) {
+        while(i<d && getline(leggi, linea)){
+			v[i].classe=linea;
+            getline(leggi, linea);
+            v[i].descrizione=linea;
+            getline(leggi, linea);
+            v[i].numero=linea;
+            getline(leggi, linea);
+            v[i].subalterno=linea;
+            getline(leggi, linea);
+            v[i].cap=linea;
+            getline(leggi, linea);
+            v[i].istat=linea;
+            getline(leggi, linea);
+            v[i].latitudine=stod(linea);
+            getline(leggi, linea);
+            v[i].longitudine=stod(linea);
+            i++;
+        }
+        leggi.close();
+    }
+}
+
+//funzione visualizza struct
+void VisualizzaDati(NumerazioneCivica v[], int d){
+	
+}
+
 int main(){
 	
-	NumerazioneCivica dati[];
+	ifstream leggi("Comune_Bergamo_-_Numerazione_civica");
+	int opzione;
+	NumerazioneCivica dati[10];
+	int d=sizeof(dati)/sizeof(dati[0]);
+	do{
+		cout<<"1 - carica dati \n2 - visualizza dati";
+		cout<<"\ninserisci l'opzione: ";
+		cin>>opzione;
+		
+		switch(opzione){
+			case 1:{
+				CaricaDati(dati, d);
+				break;
+			}
+			case 2:{
+				break;
+			}	
+		}
+	}while(opzione!=0);
+
 
 	return 0;
 }
