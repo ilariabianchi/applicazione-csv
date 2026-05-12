@@ -20,6 +20,7 @@ struct NumerazioneCivica {
     Location posto;
 };
 
+//carica dati
 bool CaricaDati(NumerazioneCivica v[], int righe_tot){
 	//apro il file
     ifstream leggi("Comune_Bergamo_-_Numerazione_civica.csv");
@@ -60,29 +61,55 @@ bool CaricaDati(NumerazioneCivica v[], int righe_tot){
     return true;
 }
 
+//visualizza dati
 string VisualizzaDati(NumerazioneCivica v[], int d) {
     string s;
     for(int i=0; i<d; i++){
-        s+= v[i].classe+"\t";
-        s+= v[i].descrizione+"\t";
-        s+= v[i].numero+"\t";
-        s+= v[i].subalterno+"\t";
-        s+= v[i].cap+"\t";
-        s+= v[i].istat+"\t";
-        s+= to_string(v[i].latitudine)+"\t";
-        s+= to_string(v[i].longitudine)+"\n";
+        s+=v[i].classe+"\t";
+        s+=v[i].descrizione+"\t";
+        s+=v[i].numero+"\t";
+        s+=v[i].subalterno+"\t";
+        s+=v[i].cap+"\t";
+        s+=v[i].istat+"\t";
+        s+=to_string(v[i].latitudine)+"\t";
+        s+=to_string(v[i].longitudine)+"\n";
     }
     //ritorno tutta la stringa
     return s;
 }
 
+//ordinamento per numero civico
+void Swap(NumerazioneCivica &a, NumerazioneCivica &b){
+	NumerazioneCivica temp=a;
+	a=b;
+	b=temp;
+}
+void OrdinaCivico(NumerazioneCivica v[], int d){
+	//bubblesort
+	for(int i=0; i<d-1; i++){
+		for(int j=0; j<d-1; j++){
+			if(v[j].numero>v[j+1].numero){
+				swap(v[j], v[j+1]);
+			}		
+		}
+	}	
+}
+
+
+//mostra tutti i numeri civici di quella via in ordine
+void CercaVia(NumerazioneCivica n, NumerazioneCivica v[], int d){
+
+}
+
+
 int main() {
     int opzione;
+    NumerazioneCivica x;
     NumerazioneCivica dati[10];
     int d=sizeof(dati)/sizeof(dati[0]);
 
     do{
-        cout<<"1 - carica dati\n2 - visualizza dati\n0 - stop";
+        cout<<"1 - carica dati\n2 - visualizza dati\n3 - ordina numero civico\n4 - cerca via \n0 - stop";
         cout<<"\nopzione: ";
         cin>>opzione;
         switch(opzione){
@@ -90,6 +117,7 @@ int main() {
                 if(CaricaDati(dati, d)){
                     cout<<"\ndati caricati\n\n";
                 }
+                //se i dati non vengono caricati si viene avvertiti
                 else{
                     cout<<"\nfile non aperto\n\n";
                 }
@@ -97,7 +125,19 @@ int main() {
             }
 
             case 2:{
+            	//funzione visualizza dati
             	cout<<endl<<VisualizzaDati(dati, d)<<endl;
+				break;
+			}
+			
+			case 3:{
+				//visualizza vie ordinate per numero 
+				cout<<endl;
+				//ordino array per numero
+				OrdinaCivico(dati, d);
+				//visualizzo
+				cout<<endl<<VisualizzaDati(dati, d)<<endl;
+				cout<<endl;
 				break;
 			}	
         }
