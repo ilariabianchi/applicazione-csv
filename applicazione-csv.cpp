@@ -20,7 +20,6 @@ struct NumerazioneCivica {
     Location posto;
 };
 
-//carica dati
 bool CaricaDati(NumerazioneCivica v[], int righe_tot){
 	//apro il file
     ifstream leggi("Comune_Bergamo_-_Numerazione_civica.csv");
@@ -61,7 +60,6 @@ bool CaricaDati(NumerazioneCivica v[], int righe_tot){
     return true;
 }
 
-//visualizza dati
 string VisualizzaDati(NumerazioneCivica v[], int d) {
     string s;
     for(int i=0; i<d; i++){
@@ -78,7 +76,6 @@ string VisualizzaDati(NumerazioneCivica v[], int d) {
     return s;
 }
 
-//ordinamento per numero civico
 void Swap(NumerazioneCivica &a, NumerazioneCivica &b){
 	NumerazioneCivica temp=a;
 	a=b;
@@ -95,9 +92,20 @@ void OrdinaCivico(NumerazioneCivica v[], int d){
 	}	
 }
 
-
-//mostra tutti i numeri civici di quella via in ordine
-void CercaVia(NumerazioneCivica n, NumerazioneCivica v[], int d){
+int CercaVia(string descr, NumerazioneCivica v[], NumerazioneCivica corrispondenti[], int d){
+	//faccio un array in cui inserirò tutte le vie corrisponenti alla ricerca
+	int vie=0;
+	for(int i=0; i<d; i++){
+		//se nell'array oroginale trovo il nome che corrisponde a quello che sto cercando lo copio nell'array con solo quelle vie
+        if(v[i].descrizione==descr){
+        	//copio
+            corrispondenti[vie]=v[i];
+            vie++;
+        }
+    }
+    //numero per ordine civico le vie che ho cercato
+	OrdinaCivico(corrispondenti, vie);
+	return vie;
 
 }
 
@@ -109,7 +117,7 @@ int main() {
     int d=sizeof(dati)/sizeof(dati[0]);
 
     do{
-        cout<<"1 - carica dati\n2 - visualizza dati\n3 - ordina numero civico\n4 - cerca via \n0 - stop";
+        cout<<"1 - carica dati\n2 - visualizza dati\n3 - cerca via \n0 - stop";
         cout<<"\nopzione: ";
         cin>>opzione;
         switch(opzione){
@@ -131,13 +139,20 @@ int main() {
 			}
 			
 			case 3:{
-				//visualizza vie ordinate per numero 
-				cout<<endl;
-				//ordino array per numero
-				OrdinaCivico(dati, d);
-				//visualizzo
-				cout<<endl<<VisualizzaDati(dati, d)<<endl;
-				cout<<endl;
+				cout<<"\ninserisci il nome della via: ";
+                fflush(stdin);
+                //faccio inserire il nome della via
+                string via;
+                getline(cin, via);
+                //faccio un array in cui inserirò le vie corrispondenti a quelel che sto cercando
+                NumerazioneCivica corrispondenti[1000];
+                int cerca=CercaVia(via, dati, corrispondenti, d);
+                if(cerca==0){
+                	cout<<"nessun numero civico trovato\n\n";
+				}
+                else{
+                	cout<<VisualizzaDati(corrispondenti, cerca)<<endl;
+				}
 				break;
 			}	
         }
