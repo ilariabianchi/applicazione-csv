@@ -114,6 +114,12 @@ int CercaVia(string descr, NumerazioneCivica v[], NumerazioneCivica corrisponden
 	return vie;
 }
 
+void TabellaIstat(NumerazioneCivica v[], int d){
+	
+	
+}
+
+
 int main() {
     int opzione;
     NumerazioneCivica x;
@@ -121,7 +127,7 @@ int main() {
     int d=sizeof(dati)/sizeof(dati[0]);
 
     do{
-        cout<<"1 - carica dati\n2 - visualizza dati\n3 - cerca via \n0 - stop";
+        cout<<"APPLICAZIONE CSV\n1 - carica dati\n2 - visualizza dati\n3 - cerca via \n4 - tabella istat in html\n0 - stop";
         cout<<"\nopzione: ";
         cin>>opzione;
         switch(opzione){
@@ -162,6 +168,11 @@ int main() {
                 	cout<<"\nci sono "<<cerca<<" numeri civici nell via che hai cercato:\n";
                 	cout<<VisualizzaDati(corrispondenti, cerca)<<endl;
 				}
+				break;
+			}
+			
+			case 4:{
+				
 				break;
 			}	
         }
