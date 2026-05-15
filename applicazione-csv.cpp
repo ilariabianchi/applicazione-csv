@@ -1,6 +1,9 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+//per convertire in maiuscolo
+#include <algorithm>
+#include <cctype>
 using namespace std;
 
 struct Location {
@@ -85,9 +88,12 @@ void OrdinaCivico(NumerazioneCivica v[], int d){
 	//bubblesort
 	for(int i=0; i<d-1; i++){
 		for(int j=0; j<d-1; j++){
-			if(v[j].numero>v[j+1].numero){
-				swap(v[j], v[j+1]);
-			}		
+			//converto i numeri letti come stringhe in int
+			int n1=stoi(v[j].numero);
+            int n2=stoi(v[j+1].numero);
+            if(n1>n2){
+                Swap(v[j], v[j+1]);
+            }		
 		}
 	}	
 }
@@ -106,14 +112,12 @@ int CercaVia(string descr, NumerazioneCivica v[], NumerazioneCivica corrisponden
     //numero per ordine civico le vie che ho cercato
 	OrdinaCivico(corrispondenti, vie);
 	return vie;
-
 }
-
 
 int main() {
     int opzione;
     NumerazioneCivica x;
-    NumerazioneCivica dati[10];
+    NumerazioneCivica dati[1000];
     int d=sizeof(dati)/sizeof(dati[0]);
 
     do{
@@ -144,6 +148,10 @@ int main() {
                 //faccio inserire il nome della via
                 string via;
                 getline(cin, via);
+                //funzione stringa che la trasforma tutta in  maiuscolo
+                transform(via.begin(), via.end(), via.begin(), [](unsigned char c){
+        			return toupper(c);
+    			});
                 //faccio un array in cui inserirò le vie corrispondenti a quelel che sto cercando
                 NumerazioneCivica corrispondenti[1000];
                 int cerca=CercaVia(via, dati, corrispondenti, d);
@@ -151,6 +159,7 @@ int main() {
                 	cout<<"nessun numero civico trovato\n\n";
 				}
                 else{
+                	cout<<"\nci sono "<<cerca<<" numeri civici nell via che hai cercato:\n";
                 	cout<<VisualizzaDati(corrispondenti, cerca)<<endl;
 				}
 				break;
