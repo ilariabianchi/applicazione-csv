@@ -114,9 +114,49 @@ int CercaVia(string descr, NumerazioneCivica v[], NumerazioneCivica corrisponden
 	return vie;
 }
 
-void TabellaIstat(NumerazioneCivica v[], int d){
-	
-	
+//ordino i dati istat
+void OrdinaIstat(NumerazioneCivica v[], int d){
+    for(int i=0; i<d; i++){
+        for(int j=0; j<d-1; j++){
+            if(v[j].istat>v[j+1].istat){
+                Swap(v[j], v[j+1]);
+            }
+        }
+    }
+}
+//faccio la tabella report in html
+bool TabellaIstat(NumerazioneCivica v[], int d){
+	ofstream html("tabella_istat.html");
+	//creo la struttura html
+	html<<"<html>";
+	html<<"<body>";
+    html<<"<h1>tabella istat</h1>";
+    html<<"<table border='1'>";
+    html<<"<tr><th>istat</th><th>totale</th></tr>";
+    //ordino gli istat
+    OrdinaIstat(v, d);
+    //indice per guardare tutto l'array
+    int i=0;
+    while(i<d){
+    	//salvo il codice istat attuale
+    	string codice=v[i].istat;
+    	//conta quante volte appare
+    	int cont=0;
+    	// onto tutti quelli uguali consecutivi
+        while(i<d&&v[i].istat==codice){
+            cont++;
+            i++;
+        }
+        //scrivo la riga della tabella
+        html<<"<tr>";
+        html<<"<td>"<<codice<<"</td>";
+        html<<"<td>"<<cont<<"</td>";
+        html<<"</tr>";
+	}
+	//chiudo tuttp
+    html << "</table></body></html>";
+    html.close();
+    return true;
 }
 
 
@@ -172,7 +212,10 @@ int main() {
 			}
 			
 			case 4:{
-				
+				bool html=TabellaIstat(dati, d);
+				if(html){
+					cout<<"\nreport html creato\n\n";
+				}
 				break;
 			}	
         }
